@@ -23,6 +23,11 @@ public class PlayerController : MonoBehaviour
     public GameObject jumpFX;
     public GameObject landFX;
 
+    [Header("Attack Settings")]
+    public GameObject bombPrefab;
+    public float nextAttack = 0;
+    public float attackRate;
+
 
     void Start()
     {
@@ -59,6 +64,11 @@ public class PlayerController : MonoBehaviour
         {
             canJump = true;
         }
+
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            Attack();
+        }
     }
 
     void Jump()
@@ -93,5 +103,15 @@ public class PlayerController : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(groundCheck.position, checkRadius);
+    }
+
+    public void Attack()
+    {
+        if (Time.time > nextAttack)
+        {
+            Instantiate(bombPrefab, transform.position, bombPrefab.transform.rotation);
+
+            nextAttack = Time.time + attackRate;
+        }
     }
 }
