@@ -1,10 +1,10 @@
 ﻿<Properties StartupConfiguration="{9FFA8360-0BBF-7AA7-0617-18280CA03E00}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Bomb/Bomb.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Player/PlayerController.cs">
     <Files>
-      <File FileName="Assets/Scripts/Player/PlayerController.cs" Line="30" Column="6" />
-      <File FileName="Assets/Scripts/Player/PlayerAnimation.cs" Line="22" Column="47" />
+      <File FileName="Assets/Scripts/Player/PlayerController.cs" Line="120" Column="18" />
+      <File FileName="Assets/Scripts/Player/PlayerAnimation.cs" Line="23" Column="37" />
       <File FileName="Assets/Scripts/FX/JumpFX.cs" Line="9" Column="35" />
-      <File FileName="Assets/Scripts/Bomb/Bomb.cs" Line="50" Column="27" />
+      <File FileName="Assets/Scripts/Bomb/Bomb.cs" Line="17" Column="34" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">

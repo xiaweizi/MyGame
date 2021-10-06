@@ -28,6 +28,7 @@ public class Bomb : MonoBehaviour
     {
         if (Time.time > startTime + waitTime)
         {
+            // 当满足条件是，则触发爆炸动画
             animator.Play("bomb_explotion");
         }
     }
@@ -39,7 +40,7 @@ public class Bomb : MonoBehaviour
 
     public void Explotion() // animation event
     {
-
+        // 爆炸动画第一帧，开始给周边的施加力
         Collider2D[] aroundObjects = Physics2D.OverlapCircleAll(transform.position, radius, targetLayer);
 
         foreach (var item in aroundObjects)

@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     public LayerMask groundLayer;
 
     [Header("States Check")]
-    public bool isGround;
+    public bool isGround; // 是否在地面，用于避免连续跳跃
     public bool canJump;
     public bool isJump;
 
@@ -60,6 +60,7 @@ public class PlayerController : MonoBehaviour
 
     void CheckJump()
     {
+        // 监测点击跳跃按钮，并且是在地面上的时候
         if (Input.GetButtonDown("Jump") && isGround)
         {
             canJump = true;
@@ -76,8 +77,11 @@ public class PlayerController : MonoBehaviour
         if (canJump)
         {
             isJump = true;
+
+            // 跳跃时，执行跳跃动画
             jumpFX.SetActive(true);
             jumpFX.transform.position = transform.position + new Vector3(0, -0.45f, 0);
+
             rb.gravityScale = 4;
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
             canJump = false;
@@ -96,10 +100,12 @@ public class PlayerController : MonoBehaviour
 
     public void LandFX() // Animation Event
     {
+        // 在接触到地面时，触发落地动画
         landFX.SetActive(true);
         landFX.transform.position = transform.position + new Vector3(0, -0.75f, 0);
     }
 
+    // 绘制作用范围
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(groundCheck.position, checkRadius);
@@ -107,9 +113,11 @@ public class PlayerController : MonoBehaviour
 
     public void Attack()
     {
+        // 攻击，判断间隔时间，避免重复防止炸弹
         if (Time.time > nextAttack)
         {
-            Instantiate(bombPrefab, transform.position, bombPrefab.transform.rotation);
+            // 创建游戏对象，传入参数分别为：对象，位置，角度
+            GameObject newInstance =  Instantiate(bombPrefab, transform.position, bombPrefab.transform.rotation);
 
             nextAttack = Time.time + attackRate;
         }
