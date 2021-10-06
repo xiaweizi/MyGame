@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     public float speed;
     public float jumpForce;
     private Rigidbody2D rb;
+    private FixedJoystick joystick;
 
     [Header("Ground Check")]
     public Transform groundCheck;
@@ -32,6 +33,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        joystick = FindObjectOfType<FixedJoystick>();
     }
 
     void Update()
@@ -49,12 +51,22 @@ public class PlayerController : MonoBehaviour
     void Movement()
     {
         //float horizontalInput = Input.GetAxis("Horizontal"); // -1~1 包括小数
-        float horizontalInput = Input.GetAxisRaw("Horizontal"); // -1 ~ 1 不包括小数
+        //float horizontalInput = Input.GetAxisRaw("Horizontal"); // -1 ~ 1 不包括小数
+
+        // 操作杆
+        float horizontalInput = joystick.Horizontal;
 
         rb.velocity = new Vector2(horizontalInput * speed, rb.velocity.y);
-        if (horizontalInput != 0)
+        //if (horizontalInput != 0)
+        //{
+        //    transform.localScale = new Vector3(horizontalInput, 1, 1);
+        //}
+        if (horizontalInput > 0)
         {
-            transform.localScale = new Vector3(horizontalInput, 1, 1);
+            transform.eulerAngles = new Vector3(0, 0, 0);
+        } else
+        {
+            transform.eulerAngles = new Vector3(0, 180, 0);
         }
     }
 
@@ -88,6 +100,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void ButtonJump()
+    {
+        canJump = true;
+    }
+
     void PhysicsCheck()
     {
         isGround = Physics2D.OverlapCircle(groundCheck.position, checkRadius, groundLayer);
@@ -117,7 +134,7 @@ public class PlayerController : MonoBehaviour
         if (Time.time > nextAttack)
         {
             // 创建游戏对象，传入参数分别为：对象，位置，角度
-            GameObject newInstance =  Instantiate(bombPrefab, transform.position, bombPrefab.transform.rotation);
+            Instantiate(bombPrefab, transform.position, bombPrefab.transform.rotation);
 
             nextAttack = Time.time + attackRate;
         }
