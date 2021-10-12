@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Bomb
   layers:
   - Default
   - TransparentFX
@@ -11,13 +12,13 @@ TagManager:
   - Background
   - Water
   - UI
+  - Ground
   - Enviroment
   - NPC
-  - Ground
   - Bomb
   - FX
-  - 
-  - 
+  - Player
+  - CheckArea
   - 
   - 
   - 
@@ -44,6 +45,6 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: NPS
+  - name: NPC
     uniqueID: 4058269931
     locked: 0

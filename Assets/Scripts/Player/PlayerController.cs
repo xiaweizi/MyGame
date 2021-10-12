@@ -2,13 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IDamageable
 {
 
     public float speed;
     public float jumpForce;
+
     private Rigidbody2D rb;
     private FixedJoystick joystick;
+    private Animator anim;
+
+    [Header("Player state")]
+    public float health;
+    public bool isDeath;
 
     [Header("Ground Check")]
     public Transform groundCheck;
@@ -34,15 +40,23 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         joystick = FindObjectOfType<FixedJoystick>();
+        anim = GetComponent<Animator>();
     }
 
     void Update()
     {
+        if (isDeath)
+            return;
         CheckJump();
     }
 
     public void FixedUpdate()
     {
+        if (isDeath)
+        {
+            rb.velocity = Vector2.zero;
+            return;
+        }
         PhysicsCheck();
         Movement();
         Jump();
@@ -53,18 +67,22 @@ public class PlayerController : MonoBehaviour
         //float horizontalInput = Input.GetAxis("Horizontal"); // -1~1 包括小数
         //float horizontalInput = Input.GetAxisRaw("Horizontal"); // -1 ~ 1 不包括小数
 
-        // 操作杆
-        float horizontalInput = joystick.Horizontal;
-
-        rb.velocity = new Vector2(horizontalInput * speed, rb.velocity.y);
+        //rb.velocity = new Vector2(horizontalInput * speed, rb.velocity.y);
         //if (horizontalInput != 0)
         //{
         //    transform.localScale = new Vector3(horizontalInput, 1, 1);
         //}
-        if (horizontalInput > 0)
+
+
+
+        // 操作杆
+        float horizontalInput = joystick.Horizontal;
+        rb.velocity = new Vector2(horizontalInput * speed, rb.velocity.y);
+        if (horizontalInput >= 0)
         {
             transform.eulerAngles = new Vector3(0, 0, 0);
-        } else
+        }
+        else
         {
             transform.eulerAngles = new Vector3(0, 180, 0);
         }
@@ -137,6 +155,23 @@ public class PlayerController : MonoBehaviour
             Instantiate(bombPrefab, transform.position, bombPrefab.transform.rotation);
 
             nextAttack = Time.time + attackRate;
+        }
+    }
+
+    public void GetHit(float damage)
+    {
+        if (!anim.GetCurrentAnimatorStateInfo(1).IsName("player_hit"))
+        {
+            health -= damage;
+            if (health < 1)
+            {
+                health = 0;
+                isDeath = true;
+                anim.SetBool("dead", true);
+            }
+            anim.SetTrigger("hit");
+
+            UIManager.instance.UpdateHealth(health);
         }
     }
 }
